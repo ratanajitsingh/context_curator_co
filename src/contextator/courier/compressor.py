@@ -14,10 +14,11 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from enum import Enum
 from typing import Awaitable, Callable
+from ollama_backend import *
 
 
-#placeholder tokenizer, just to check logic - will use a qwen tokenizer or a usage response
-#these numbers are estimates and could be completely wrong
+#placeholder tokenizer
+#test strategy not used
 def estimate_tokens(text:str) -> int:
     if not text:
         return 0
@@ -47,12 +48,12 @@ def classify_loss(score:float) -> LossBucket:
     return LossBucket.HIGH
 
 #placeholder strategy
-#real implementation will be smthn along the lines where 3.5:4b will compress and 3.5:9b will do the loss score
-#just imitations rn
+
 CompressFn = Callable[[str,int], Awaitable[str]]
 ScoreFn = Callable[[str,str], Awaitable[float]]
 
 #compression strat func
+#test strategy not used
 async def naive_truncate_compress(text: str, target_tokens:int) -> str:
 
     target_chars = target_tokens * 4
@@ -107,8 +108,8 @@ if even after retrying it doesnt fit then fall back on low mid
 async def compress_to_boundary(
         text:str,
         boundary_tokens: int,
-        compress_fn: CompressFn = naive_truncate_compress,
-        score_fn: ScoreFn = loss_scorer,
+        compress_fn: CompressFn = qwen_compress,
+        score_fn: ScoreFn = qwen_loss_score,
         max_loss_re:int = MAX_LOW_LOSS_RE
 ) -> CompressionResult:
     attempts: list[CompressionAttempt] = []
