@@ -11,6 +11,7 @@ import httpx
 DEFAULT_HOST = "http://localhost:11434"
 COMPRESS_MODEL = "qwen3.5:4b"
 SCORE_MODEL = "qwen3.5:9b"
+LIBRARIAN_MODEL = SCORE_MODEL
 
 #setting a timeout score
 REQUEST_TIMEOUT_SECONDS = 120.0
@@ -126,3 +127,15 @@ async def qwen_loss_score(
         return UNPARSEABLE_FALLBACK_SCORE
 
     return max(0.0, min(10.0, score))
+
+
+async def ask_librarian(
+        prompt: str,
+        host: str = DEFAULT_HOST,
+        client: httpx.AsyncClient | None = None,
+) -> str:
+    '''
+    asks librarian model for planner reasoning
+    includes task decompostion, sufficiency checks, etc.
+    '''
+    return await _generate(prompt, model=LIBRARIAN_MODEL, host=host, client=client)
