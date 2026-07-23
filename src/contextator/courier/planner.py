@@ -19,7 +19,6 @@ import json
 import re
 from dataclasses import dataclass, field
 
-from torch.distributions.constraints import dependent
 
 from fetcher import fetch_files,split_successes
 from compressor import compress_to_boundary,CompressionResult

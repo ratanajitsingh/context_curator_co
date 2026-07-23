@@ -1,0 +1,15 @@
+Project Aurora Incident Report - Q3
+Incident ID: AUR-2024-Q3-014
+Date: September 14. Duration: 2 hours 47 minutes. Severity: SEV-1.
+
+Root cause: a misconfigured connection pool on the payments-gateway
+service reduced max connections from 200 to 20 during a routine config
+sync. Under normal Q3 traffic this pool exhausted within 90 seconds of
+peak load. The exhaustion triggered aggressive client-side retries,
+producing a retry storm that saturated the upstream database's
+connection limit, cascading the outage to checkout, notifications, and
+the reporting pipeline.
+
+Detection: automated alerting on connection pool saturation fired 4
+minutes after the config sync, but the on-call engineer misread it as a
+transient blip and did not escalate for 22 minutes.

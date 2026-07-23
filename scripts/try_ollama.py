@@ -1,5 +1,5 @@
 import asyncio
-from ollama_backend import qwen_compress, qwen_loss_score, OllamaError
+from src.contextator.courier.ollama_backend import qwen_compress, qwen_loss_score, OllamaError
 
 SAMPLE_TEXT = (
     "The board approved the merger contingent on three conditions: first, "

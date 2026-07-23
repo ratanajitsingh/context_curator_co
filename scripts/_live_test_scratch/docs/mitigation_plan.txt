@@ -1,0 +1,10 @@
+Project Aurora - Mitigation Plan
+Following outage AUR-2024-Q3-014, these mitigations were approved:
+1. Hard floor on connection pool sizing in config validation, so a sync
+   cannot silently drop max connections below 100. Owner: platform-infra.
+2. Circuit breaker on payments-gateway's outbound DB calls to fail fast
+   under saturation instead of retrying. Owner: payments-team.
+3. Tune alert thresholds so saturation alerts page directly instead of
+   routing through a dashboard the on-call has to interpret. Owner: SRE.
+4. Runbook entry for "connection pool saturation" with explicit
+   escalation criteria. Owner: SRE.
